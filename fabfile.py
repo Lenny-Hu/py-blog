@@ -39,3 +39,8 @@ def tag_version(version):
 def fetch_version(version):
     """从github上下载指定tag的代码"""
     local("wget https://github.com/Lenny-Hu/py-blog/archive/%s.tar.gz"%version);
+
+@task
+def test():
+    """运行测试"""
+    local('python3 manage.py test');
