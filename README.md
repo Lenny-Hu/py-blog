@@ -54,3 +54,38 @@ python3 manage.py migrate # 数据库迁移
 
 python3 manage.py createsuperuser # 创建超级管理员来登录后台，管理地址：/admin
 ```
+
+# 软件依赖安装
+
+python没有统一的包管理形式，通常使用requiremenets.txt作为配置文件管理依赖，例如
+```
+# 原来安装django
+pip install Django==2.1
+
+# 现在只需要将Django==2.1加入requiremenets.txt文件中，执行下面的命令安装依赖
+pip install -r requiremenets.txt # 当有多个环境时，会创建一个requiremenets文件夹，其内放多个配置文件，如dev.txt，prod.txt
+```
+
+# 构建流
+
+## 使用fabric搭建构建系统(像是配置nodejs中package.json中的start/dev等命令)
+```
+pip install fabric3 # 安装
+
+# 在项目根目录下创建fabfile.py（文件内容见项目），然后执行fab hello，该命令会从fabfile文件中找对应的函数来执行。
+
+# 像上述安装依赖的命令，可写在fabfile.py添加一个install函数中，利用fabric执行命令进行安装，类似nodejs中定义在package.json中的start/dev等命令，
+
+# 如果使用了requiremenets文件夹，则可在install函数中添加一个参数，实现不同的环境安装不同的依赖。
+fab install || fabinstall:prod # 前者使用dev.txt，后者使用prod.txt
+
+# 添加运行测试服务器的命令
+fab runserver
+
+# 以此类推，添加其他的命令来简化开发，可用list参数列出已有的任务
+fab --list
+
+# 如果不希望有的方法被罗列出来，在那些希望暴露的函数添加@task装饰器即可
+```
+
+
